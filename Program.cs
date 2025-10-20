@@ -7,8 +7,8 @@ namespace ConvertVideoToMicro
 {
     internal class Program
     {
-        public static string ffmpegPath = "C:\\Users\\William\\AppData\\Local\\Playnite\\ffmpeg-7.1.1-essentials_build\\ffmpeg-7.1.1-essentials_build\\bin\\ffmpeg.exe";
-        public static string ffmpegBinPath = "C:\\Users\\William\\AppData\\Local\\Playnite\\ffmpeg-7.1.1-essentials_build\\ffmpeg-7.1.1-essentials_build\\bin";
+        public static string ffmpegPath = "ffmpeg-7.1.1-essentials_build/ffmpeg-7.1.1-essentials_build/bin/ffmpeg.exe";
+        public static string ffmpegBinPath = "ffmpeg-7.1.1-essentials_build/ffmpeg-7.1.1-essentials_build/bin";
 
         public static JsonDocument configuration = JsonDocument.Parse(File.ReadAllText("configuration.json"));
 
@@ -21,7 +21,21 @@ namespace ConvertVideoToMicro
                     var videoPath = args[i];
                     var file = new FileInfo(videoPath);
                     var microName = file.Name.Insert(0, "micro.");
-                    var microPath = Path.Combine("C:\\Users\\William\\Documents\\ConvertVideoToMicro\\output", microName);
+                    var basePath = "C:\\Users\\William\\Documents\\ConvertVideoToMicro\\output";
+
+                    var copyNr = 0;
+                    while (File.Exists(Path.Combine(basePath, microName)))
+                    {
+                        copyNr++;
+                        microName.Insert(0, $"({i})");
+                        if (File.Exists(Path.Combine(basePath, microName)))
+                        {
+                            continue;
+                        }
+  
+                    }
+
+                    var microPath = Path.Combine(basePath, microName);
 
                     Console.WriteLine($"Converting Video: {file.Name}");
                     var result = ConvertVideoToMicro(videoPath, microPath, true);
