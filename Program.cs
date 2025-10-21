@@ -27,7 +27,7 @@ namespace ConvertVideoToMicro
                     while (File.Exists(Path.Combine(basePath, microName)))
                     {
                         copyNr++;
-                        microName.Insert(0, $"({i})");
+                        microName = microName.Insert(0, $"({copyNr})");
                         if (File.Exists(Path.Combine(basePath, microName)))
                         {
                             continue;
